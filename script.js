@@ -21,7 +21,7 @@ async function getArticles() {
 
 function renderArticles(article) {
     return `
-        <div onmouseover="this.style.backgroundColor='beige';" onmouseout="this.style.backgroundColor='';" style="display: flex; flex-direction: column; align-items: center; height: 80vh; width: 90vh; margin-top: 40px; border: 1px solid black">
+        <div onmouseover="this.style.backgroundColor='beige';" onmouseout="this.style.backgroundColor='';" style="display: flex; flex-direction: column; align-items: center; width: 90vh; margin-top: 40px; border: 1px solid black">
             <h4 style= "width: 480px; margin-top: 15px"> ${article.title} </h4>
            <img src="${article.urlToImage}" width=480px height=240px">
            <div style="display: flex; justify-content: space-between; width:480px; margin-top: 10px" >
