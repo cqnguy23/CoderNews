@@ -1,15 +1,18 @@
 
-
+let page = 1;
 function getUrl() {
- let url = "https://newsapi.org/v2/top-headlines?apiKey=2a25c01929c345b4a768b0154c14ff98";
+    let url = "https://newsapi.org/v2/top-headlines?apiKey=2a25c01929c345b4a768b0154c14ff98";
+
     const urlExtension = window.location.search.split("?")[1];
-        if (!urlExtension) url += "&country=us"    
-        else { url += "&" + urlExtension }
+        if (!urlExtension) {url += "&country=us"}    
+        else {
+            url += "&" + urlExtension;
+        }
     console.log(url)
     return url;
 }
 async function getArticles() {
-    const response = await fetch(getUrl());
+    const response = await fetch(getUrl() + `&page=${page}`);
     const json = await response.json();
     const {articles} = json;
     document.getElementById("title").innerHTML = `<h1 style="text-align: center; color:red; margin-top: 15px"> CoderNews </h1>`;
@@ -32,6 +35,10 @@ function renderArticles(article) {
         </div>
     `
 }
-
-
 getArticles();
+
+function renderNextPage() {
+    page++;
+    getArticles();
+    console.log("Invoke")
+}
