@@ -3,7 +3,7 @@ ctx.width = 500;
 ctx.height = 300;
 const key = "769d9980-319f-4137-8300-c2c935518543"
 const cryptoURL =
-    "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=3&convert=USD&CMC_PRO_API_KEY=" + key;
+    "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?start=1&limit=5&convert=USD&CMC_PRO_API_KEY=" + key;
 function generateURL() {
     return cryptoURL;
 }
@@ -45,6 +45,7 @@ function changeColor3(){
 let myChart;
 let data;
 function renderLineGraph(data) {
+    console.log({data})
     myChart = new Chart(ctx, {
         type: 'line',
         data: {
