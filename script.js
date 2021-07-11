@@ -1,5 +1,7 @@
 
 let page = 1;
+let q;
+let queryPresent = false;
 function getUrl() {
     let url = "https://newsapi.org/v2/top-headlines?apiKey=2a25c01929c345b4a768b0154c14ff98";
 
@@ -8,18 +10,43 @@ function getUrl() {
         else {
             url += "&" + urlExtension;
         }
-    console.log(url)
     return url;
 }
+let articles = [];
+let searchBar = document.getElementById("searchBar");
+searchBar.addEventListener('submit',(event) => {
+    findValue(searchBar.elements['value'].value)
+    event.preventDefault();
+})
 async function getArticles() {
-    const response = await fetch(getUrl() + `&page=${page}`);
-    const json = await response.json();
-    const {articles} = json;
-    document.getElementById("title").innerHTML = `<h1 style="text-align: center; color:red; margin-top: 15px"> CoderNews </h1>`;
-    console.log({articles})
-    let goodArticles = articles.filter((article) => article.author)
-    let articleHTML = goodArticles.map(renderArticles)
-    document.getElementById("content").innerHTML = articleHTML.join("")
+    try {
+        let urlToGet = getUrl() + `&page=${page}`
+        if (queryPresent) {
+            urlToGet += q ;
+        }
+        let response = await fetch(urlToGet);
+        const json = await response.json();
+        if (page == 1) {
+            articles = json.articles;
+        }
+        else {
+            articles = articles.concat(json.articles);
+        }
+        document.getElementById("title").innerHTML = `<h1 style="text-align: center; color:red; margin-top: 15px"> CoderNews </h1>`;
+
+        localStorage.setItem("willNotWork", articles);
+
+        localStorage.setItem("willWork", JSON.stringify(articles));
+    } catch (error) {
+        console.log(error);
+        articles = JSON.parse(localStorage.getItem("willWork"));
+    }
+    finally {
+        let goodArticles = articles.filter((article) => article.author)
+        let articleHTML = goodArticles.map(renderArticles);
+        document.getElementById("content").innerHTML = articleHTML.join("");
+    }
+  
 }
 
 function renderArticles(article) {
@@ -38,7 +65,14 @@ function renderArticles(article) {
 getArticles();
 
 function renderNextPage() {
-    page++;
+    ++page;
     getArticles();
     console.log("Invoke")
+}
+
+function findValue(value) {
+    q = `&q=${value}`
+    queryPresent = true;
+    getArticles();
+    console.log("Here")
 }
